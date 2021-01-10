@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MarqueeView">
+        <attr name="textAnimator" format="reference" />
+        <attr name="repeatCount" format="integer" />
+        <attr name="scrollSpeed" format="fraction" />
+
+        <attr name="android:autoStart" />
+        <attr name="android:enabled" />
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+    </declare-styleable>
+</resources>
