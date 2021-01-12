@@ -34,6 +34,7 @@ public class TouchMarqueeView extends MarqueeView {
 
     private boolean mPaused;
     private long mCurrentPlayTime;
+    private long mDuration;
 
     /**
      * Simple constructor to use when creating the view from code.
@@ -110,7 +111,8 @@ public class TouchMarqueeView extends MarqueeView {
         if (!mPaused && animator instanceof ValueAnimator) {
             mPaused = true;
             mCurrentPlayTime = ((ValueAnimator) animator).getCurrentPlayTime();
-            animator.cancel();
+            mDuration = animator.getDuration();
+            animator.setDuration(0);
         }
     }
 
@@ -127,7 +129,7 @@ public class TouchMarqueeView extends MarqueeView {
         }
 
         if (mPaused && animator instanceof ValueAnimator) {
-            animator.start();
+            animator.setDuration(mDuration);
             ((ValueAnimator) animator).setCurrentPlayTime(mCurrentPlayTime);
             mPaused = false;
         }
