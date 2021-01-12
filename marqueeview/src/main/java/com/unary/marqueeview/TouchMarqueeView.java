@@ -99,7 +99,7 @@ public class TouchMarqueeView extends MarqueeView {
     /**
      * Pause animator and provide some backwards compatibility if instance of ValueAnimator.
      */
-    private void pause() {
+    protected void pause() {
         Animator animator = getTextAnimator();
         if (animator == null) return;
 
@@ -119,7 +119,7 @@ public class TouchMarqueeView extends MarqueeView {
     /**
      * Resume animator and provide some backwards compatibility if instance of ValueAnimator.
      */
-    private void resume() {
+    protected void resume() {
         Animator animator = getTextAnimator();
         if (animator == null) return;
 
