@@ -28,6 +28,7 @@ import android.graphics.Region;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Property;
+import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -54,6 +55,7 @@ import java.text.Bidi;
  *
  *   android:autoStart="boolean"         // If scrolling should start automatically
  *   android:enabled="boolean"           // Changes the view state
+ *   android:gravity="flags"             // Gravity applied within the view
  *   android:text="string"               // Only scrolls if necessary
  *   android:textColor="reference|color" // Reference to a color selector or simple color
  *   android:textSize="dimension"        // Text size used. Default is 14sp
@@ -71,6 +73,7 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
     private static final float SCROLL_SPEED = 1f;
     private static final int SCROLL_MULTIPLIER = 5;
     private static final boolean AUTO_START = true;
+    private static final int GRAVITY = Gravity.NO_GRAVITY;
 
     private String mText;
     private String mScrollingText;
@@ -80,6 +83,7 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
     private float mOffset; // External animator
     private float mScrollSpeed;
     private boolean mAutoStart;
+    private int mGravity;
     private Paint mTextPaint;
     private Animator mTextAnimator;
     private boolean mTextAnimatorSet;
@@ -161,6 +165,7 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
             mScrollSpeed = typedArray.getFraction(R.styleable.MarqueeView_scrollSpeed, 1, 1, SCROLL_SPEED);
             mAutoStart = typedArray.getBoolean(R.styleable.MarqueeView_android_autoStart, AUTO_START);
             enabled = typedArray.getBoolean(R.styleable.MarqueeView_android_enabled, isEnabled());
+            mGravity = typedArray.getInt(R.styleable.MarqueeView_android_gravity, GRAVITY);
             mText = typedArray.getString(R.styleable.MarqueeView_android_text);
             mTextColor = typedArray.getColorStateList(R.styleable.MarqueeView_android_textColor);
             textSize = typedArray.getDimension(R.styleable.MarqueeView_android_textSize, dpToPixels(context, TEXT_SIZE));
@@ -248,8 +253,18 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
             }
         }
 
+        // Similar to getDrawingRect()
         mDrawingRect.set(paddingStart, getPaddingTop(),
                 getWidth() - paddingEnd, getHeight() - getPaddingBottom());
+
+        int minWidth = (int) Math.min(getTextWidth(mTextPaint, mText), mDrawingRect.width());
+
+        // Apply the view gravity
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Gravity.apply(mGravity, minWidth, (int) getFontHeight(mTextPaint), mDrawingRect, mDrawingRect, getLayoutDirection());
+        } else {
+            Gravity.apply(mGravity, minWidth, (int) getFontHeight(mTextPaint), mDrawingRect, mDrawingRect);
+        }
 
         // Start the scroll animator
         if (isScrollable()) {
@@ -638,6 +653,25 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
      */
     public void setAutoStart(boolean autoStart) {
         mAutoStart = autoStart;
+        requestLayout();
+    }
+
+    /**
+     * Get the gravity applied within the view. Text that fits is aligned to this property.
+     *
+     * @return Gravity of the view.
+     */
+    public int getGravity() {
+        return mGravity;
+    }
+
+    /**
+     * Set the gravity applied within the view. Text that fits is aligned to this property.
+     *
+     * @param gravity Gravity of the view.
+     */
+    public void setGravity(int gravity) {
+        mGravity = gravity;
         requestLayout();
     }
 }

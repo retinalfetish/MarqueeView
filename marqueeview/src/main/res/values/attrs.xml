@@ -7,6 +7,7 @@
 
         <attr name="android:autoStart" />
         <attr name="android:enabled" />
+        <attr name="android:gravity" />
         <attr name="android:text" />
         <attr name="android:textColor" />
         <attr name="android:textSize" />
