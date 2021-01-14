@@ -4,7 +4,7 @@ A styleable marquee text widget that creates the classic effect but with a few m
 <img src="/art/screenshot-animation-fling.gif" alt="Screenshot" height=600> <img src="/art/screenshot-animation-repeat.gif" alt="Screenshot" height=600>
 
 ## Usage
-The library is part of [JCenter](https://bintray.com/rogue/maven/com.unary:marqueeview) (a default repository) and can be included in your project by adding `implementation 'com.unary:marqueeview:1.0.0'` as a module dependency. The latest build can also be found at [JitPack](https://jitpack.io/#com.unary/marqueeview).
+The library is part of [JCenter](https://bintray.com/rogue/maven/com.unary:marqueeview) (a default repository) and can be included in your project by adding `implementation 'com.unary:marqueeview:1.0.1'` as a module dependency. The latest build can also be found at [JitPack](https://jitpack.io/#com.unary/marqueeview).
 ```
 allprojects {
     repositories {
@@ -52,6 +52,7 @@ app:scrollSpeed="percent"           // Unit interval used to determine speed
 
 android:autoStart="boolean"         // If scrolling should start automatically
 android:enabled="boolean"           // Changes the view state
+android:gravity="flags"             // Gravity applied within the view
 android:text="string"               // Only scrolls if necessary
 android:textColor="reference|color" // Reference to a color selector or simple color
 android:textSize="dimension"        // Text size used. Default is 14sp
