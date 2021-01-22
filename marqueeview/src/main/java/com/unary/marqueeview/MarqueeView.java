@@ -205,7 +205,7 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
 
         mDrawingRect = new Rect();
 
-        // Set the text paint color
+        // Set a stateful text color
         setEnabled(enabled);
     }
 
@@ -309,9 +309,7 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-
-        int statefulColor = mTextColor.getColorForState(getDrawableState(), mTextColor.getDefaultColor());
-        mTextPaint.setColor(statefulColor);
+        setTextColor(mTextColor);
     }
 
     /**
@@ -477,6 +475,7 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
      *
      * @return ColorStateList color.
      */
+    @NonNull
     public ColorStateList getTextColor() {
         return mTextColor;
     }
@@ -486,8 +485,12 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
      *
      * @param textColor ColorStateList color.
      */
-    public void setTextColor(ColorStateList textColor) {
+    public void setTextColor(@NonNull ColorStateList textColor) {
         mTextColor = textColor;
+
+        int statefulColor = textColor.getColorForState(getDrawableState(), textColor.getDefaultColor());
+        mTextPaint.setColor(statefulColor);
+
         requestLayout();
     }
 
