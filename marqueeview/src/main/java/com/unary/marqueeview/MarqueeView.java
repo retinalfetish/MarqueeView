@@ -284,6 +284,16 @@ public class MarqueeView extends View implements ValueAnimator.AnimatorUpdateLis
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        // Animator might leak context
+        if (mTextAnimator != null) {
+            mTextAnimator.cancel();
+        }
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
